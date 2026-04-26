@@ -1,0 +1,404 @@
+/* Admin shell — professional blue / green / white theme */
+:root {
+  --admin-blue-900: #0c2d5c;
+  --admin-blue-800: #0f3a73;
+  --admin-blue-600: #1d6fd6;
+  --admin-blue-400: #3b8aed;
+  --admin-green-700: #047857;
+  --admin-green-500: #10b981;
+  --admin-green-400: #34d399;
+  --admin-white: #ffffff;
+  --admin-surface: #f0f7ff;
+  --admin-border: rgba(13, 74, 140, 0.12);
+}
+
+.adminShell {
+  display: flex;
+  min-height: 100vh;
+  max-height: 100vh;
+  background: linear-gradient(165deg, var(--admin-surface) 0%, #e8f5f0 45%, #f8fcff 100%);
+  color: #0f172a;
+}
+
+.adminShellOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 45, 92, 0.45);
+  z-index: 40;
+  backdrop-filter: blur(2px);
+}
+
+@media (min-width: 768px) {
+  .adminShellOverlay {
+    display: none;
+  }
+}
+
+.adminShellSidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: 16rem;
+  height: 100%;
+  background: linear-gradient(180deg, var(--admin-blue-900) 0%, var(--admin-blue-800) 55%, #0a2547 100%);
+  box-shadow: 4px 0 24px rgba(12, 45, 92, 0.35);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 0.22s ease;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.adminShellSidebar--open {
+  transform: translateX(0);
+}
+
+@media (min-width: 768px) {
+  .adminShellSidebar {
+    position: relative;
+    transform: none !important;
+    flex-shrink: 0;
+  }
+}
+
+.adminShellSidebarHead {
+  padding: 1.1rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.adminShellSidebarTitle {
+  font-size: 1.125rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.02em;
+  color: var(--admin-white);
+}
+
+.adminShellSidebarSub {
+  font-size: 0.8125rem;
+  color: rgba(226, 244, 255, 0.75);
+  margin: 0.35rem 0 0;
+}
+
+.adminShellCloseMobile {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  display: inline-flex;
+  padding: 0.25rem;
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+}
+
+@media (min-width: 768px) {
+  .adminShellCloseMobile {
+    display: none;
+  }
+}
+
+.adminShellNav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.65rem 0.5rem 1rem;
+}
+
+.adminShellNavBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.65rem 0.75rem;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(240, 249, 255, 0.88);
+  text-align: left;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.adminShellNavBtn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--admin-white);
+}
+
+.adminShellNavBtn--active {
+  background: linear-gradient(90deg, rgba(16, 185, 129, 0.28) 0%, rgba(29, 111, 214, 0.35) 100%);
+  color: var(--admin-white);
+  box-shadow: inset 3px 0 0 var(--admin-green-400);
+}
+
+.adminShellNavIcon {
+  flex-shrink: 0;
+  opacity: 0.95;
+  color: rgba(180, 230, 255, 0.95);
+}
+
+.adminShellNavBtn--active .adminShellNavIcon {
+  color: var(--admin-green-400);
+}
+
+.adminShellSidebarFoot {
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.adminShellLogout {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fecaca;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.adminShellLogout:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.adminShellMainCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.adminShellHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.35rem;
+  background: var(--admin-white);
+  box-shadow: 0 2px 12px rgba(12, 45, 92, 0.08);
+  flex-shrink: 0;
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(90deg, var(--admin-blue-600), var(--admin-green-500)) 1;
+}
+
+.adminShellHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.adminShellHeaderTrailing {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+.adminShellInboxTray {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.adminShellInboxBtn {
+  position: relative;
+  width: 2.35rem;
+  height: 2.35rem;
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: linear-gradient(165deg, var(--admin-blue-600) 0%, var(--admin-blue-800) 100%);
+  color: var(--admin-white);
+  box-shadow: 0 2px 10px rgba(12, 45, 92, 0.35);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.adminShellInboxBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(12, 45, 92, 0.42);
+}
+
+.adminShellInboxBtn:focus-visible {
+  outline: 2px solid var(--admin-blue-400);
+  outline-offset: 2px;
+}
+
+.adminShellInboxBellIcon {
+  stroke: var(--admin-white);
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.15));
+}
+
+.adminShellInboxBadge {
+  position: absolute;
+  top: -0.2rem;
+  right: -0.2rem;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  padding: 0 0.28rem;
+  border-radius: 999px;
+  background: #ef4444;
+  color: var(--admin-white);
+  font-size: 0.62rem;
+  font-weight: 800;
+  line-height: 1.1rem;
+  text-align: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  border: 2px solid var(--admin-white);
+}
+
+@media (max-width: 420px) {
+  .adminShellInboxTray {
+    gap: 0.3rem;
+  }
+
+  .adminShellInboxBtn {
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 9px;
+  }
+}
+
+.adminShellMenuBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem;
+  border: 1px solid var(--admin-border);
+  background: var(--admin-white);
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--admin-blue-800);
+}
+
+@media (min-width: 768px) {
+  .adminShellMenuBtn {
+    display: none;
+  }
+}
+
+.adminShellHeaderTitle {
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--admin-blue-900);
+}
+
+.adminShellAvatar {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--admin-blue-600), var(--admin-green-500));
+  color: var(--admin-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(29, 111, 214, 0.35);
+  border: 2px solid rgba(255, 255, 255, 0.95);
+}
+
+.adminShellContent {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 1.15rem 1.35rem 1.75rem;
+}
+
+/* Dashboard home: fill main column, no outer scroll */
+.adminShellContent--fit {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 0.45rem 1rem 0.6rem;
+}
+
+.adminShellContent--fit > * {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Nested tabs */
+.adminShellTabRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.adminShellTabBtn {
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(29, 111, 214, 0.25);
+  background: var(--admin-white);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  color: var(--admin-blue-800);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.adminShellTabBtn:hover {
+  border-color: var(--admin-blue-400);
+  box-shadow: 0 2px 8px rgba(29, 111, 214, 0.12);
+}
+
+.adminShellTabBtn--active {
+  background: linear-gradient(135deg, rgba(29, 111, 214, 0.12), rgba(16, 185, 129, 0.18));
+  border-color: var(--admin-green-500);
+  color: var(--admin-green-700);
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.2);
+}
+
+/* Content cards inside main area */
+.adminShellInset {
+  background: var(--admin-white);
+  border-radius: 14px;
+  border: 1px solid var(--admin-border);
+  box-shadow: 0 4px 20px rgba(12, 45, 92, 0.06);
+}
+
+.adminShellContent .adminViewportPane,
+.adminShellContent .adminDashPage,
+.adminShellContent .adminMgmtPage,
+.adminShellContent .adminUserMgmt {
+  max-width: 100%;
+}
+
+/* White panels on blue-green canvas (overview + user directory) */
+.adminShellContent .adminDashPage:not(.adminShellInset),
+.adminShellContent .adminUserMgmt {
+  background: var(--admin-white);
+  border-radius: 14px;
+  border: 1px solid var(--admin-border);
+  box-shadow: 0 4px 24px rgba(12, 45, 92, 0.07);
+}
+
+.adminShellContent .adminMgmtPage.adminShellInset {
+  padding: 1.15rem 1.25rem 1.5rem;
+}

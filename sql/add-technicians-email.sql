@@ -1,0 +1,3 @@
+ALTER TABLE public.technicians
+ADD COLUMN IF NOT EXISTS email VARCHAR(255) UNIQUE;
+
