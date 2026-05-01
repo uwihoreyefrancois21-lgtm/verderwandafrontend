@@ -326,7 +326,6 @@ export default function HomePage() {
 
               <div className="heroMedia">
                 <div className="heroImageCard">
-                  <p className="pill"> Reliable. Sustainable. Built to last.</p>
                   <img className="heroImage" src={heroImg} alt="Plumbing and water infrastructure" />
                   <div className="heroGlow" aria-hidden="true" />
                 </div>
