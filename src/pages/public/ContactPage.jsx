@@ -1,8 +1,8 @@
 export default function ContactPage() {
   const contact = {
-    phone: '+250788599614',
+    phone: '+250788599614/0799512923',
     email: 'verderwanda@gmail.com',
-    address: 'Kicukiro, Kicukiro, Umujyi wa Kigali, RWANDA',
+    address: 'Kicukiro, Kicukiro,  Kigali City, RWANDA',
   }
   const hours = [
     { label: 'Monday – Saturday', value: '08:00 AM – 5:00 PM' },
@@ -42,7 +42,7 @@ export default function ContactPage() {
             </div>
             <div className="contactRow">
               <div className="contactLabel">WhatsApp</div>
-              <a className="contactValue" href="https://wa.me/250788599614" target="_blank" rel="noreferrer">
+              <a className="contactValue" href="https://wa.me/250799512923" target="_blank" rel="noreferrer">
                 Chat now
               </a>
             </div>
