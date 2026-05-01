@@ -18,9 +18,13 @@ export default function TopBar({
   const { token, role, logout } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
-  const next = encodeURIComponent(location.pathname || '/')
-  const signInTo = `/auth?next=${next}`
   const pathname = location.pathname || '/'
+  const signInTo =
+    pathname.startsWith('/dashboard/') ||
+    pathname.startsWith('/employer/') ||
+    pathname.startsWith('/jobs/')
+      ? `/auth?next=${encodeURIComponent(pathname)}`
+      : '/auth'
   const normalizedRole = normalizeRole(role)
   const isProfileSettings = pathname.startsWith('/settings/profile')
   const isEmployerWorkspace =
@@ -60,6 +64,12 @@ export default function TopBar({
           <span className="topBarWorkspaceTitle">
             {isEmployerWorkspace ? 'Employer workspace' : isJobSeekerWorkspace ? 'Job seeker workspace' : 'Workspace'}
           </span>
+          <p style={{ fontSize: "14px", color: "#333" }}>
+  <strong style={{ color: "#0d6efd" }}>Momo Pay Code:</strong> 059914 | 
+  <strong style={{ color: "#0d6efd" }}> Name:</strong> Verde Rwanda Ltd | 
+  <strong style={{ color: "#0d6efd" }}> Bank:</strong> Equity Bank | 
+  <strong style={{ color: "#0d6efd" }}> Account:</strong> 
+</p>
         </div>
       ) : (
         <div className="topBarNavWrap">

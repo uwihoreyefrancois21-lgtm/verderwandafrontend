@@ -24,7 +24,6 @@ export function AuthProvider({ children }) {
         setMe(null)
         return
       }
-      setMe(null)
       setLoading(true)
       try {
         const data = await apiFetch('/auth/me', { token })
@@ -45,13 +44,30 @@ export function AuthProvider({ children }) {
     }
   }, [token])
 
-  async function login({ email, password }) {
-    const data = await apiFetch('/auth/login', { method: 'POST', jsonBody: { email, password } })
-    const nextToken = data?.token
-    if (!nextToken) throw new Error('Missing token in response')
-    localStorage.setItem('verde_token', nextToken)
-    setToken(nextToken)
+  async function hydrateUser(nextToken) {
+    const data = await apiFetch('/auth/me', { token: nextToken })
+    setMe(data)
     return data
+  }
+
+  async function login({ email, password }) {
+    setLoading(true)
+    try {
+      const data = await apiFetch('/auth/login', { method: 'POST', jsonBody: { email, password } })
+      const nextToken = data?.token
+      if (!nextToken) throw new Error('Missing token in response')
+      localStorage.setItem('verde_token', nextToken)
+      setToken(nextToken)
+      const meData = await hydrateUser(nextToken)
+      return { ...data, user: data?.user || meData }
+    } catch (error) {
+      localStorage.removeItem('verde_token')
+      setToken('')
+      setMe(null)
+      throw error
+    } finally {
+      setLoading(false)
+    }
   }
 
   async function register({

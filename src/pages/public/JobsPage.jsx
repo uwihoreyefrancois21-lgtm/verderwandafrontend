@@ -27,12 +27,14 @@ const EDUCATION_OPTIONS = [
 ]
 
 export default function JobsPage() {
+  const INITIAL_VISIBLE_JOBS = 6
   const { token, me, role, loading: authLoading } = useAuth()
   const navigate = useNavigate()
 
   const [jobs, setJobs] = useState([])
   const [categories, setCategories] = useState([])
   const [jobSearch, setJobSearch] = useState('')
+  const [showAllJobs, setShowAllJobs] = useState(false)
   const [jobSeekers, setJobSeekers] = useState([])
 
   const [apply, setApply] = useState({
@@ -281,6 +283,17 @@ export default function JobsPage() {
     })
   }, [allJobs, jobSearch, categoryNameById])
 
+  useEffect(() => {
+    setShowAllJobs(false)
+  }, [jobSearch])
+
+  const visibleJobs = useMemo(() => {
+    if (showAllJobs) return filteredJobs
+    return filteredJobs.slice(0, INITIAL_VISIBLE_JOBS)
+  }, [filteredJobs, showAllJobs, INITIAL_VISIBLE_JOBS])
+
+  const hasMoreJobs = filteredJobs.length > INITIAL_VISIBLE_JOBS
+
   const jobStats = useMemo(() => {
     let open = 0
     let taken = 0
@@ -348,7 +361,7 @@ export default function JobsPage() {
 
       <div className="jobsGrid" style={{ marginTop: 14 }}>
         {filteredJobs.length ? (
-          filteredJobs.map((j) => {
+          visibleJobs.map((j) => {
             const status = getJobDisplayStatus(j)
             const open = status === 'open'
             const chosen = String(apply.job_id) === String(j.job_id)
@@ -428,6 +441,14 @@ export default function JobsPage() {
           </div></center>
         )}
       </div>
+
+      {hasMoreJobs && !showAllJobs ? (
+        <div style={{ marginTop: 18, textAlign: 'center' }}>
+          <button type="button" className="btn btnOutline" onClick={() => setShowAllJobs(true)}>
+            View More
+          </button>
+        </div>
+      ) : null}
 
       {showWrongRoleHint ? (
         <div className="applyRoleHint">

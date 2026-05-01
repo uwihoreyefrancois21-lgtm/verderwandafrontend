@@ -91,9 +91,9 @@ export default function ServiceRequestsPage() {
               <span className="fieldLabel">Service type</span>
               <select className="fieldInput" value={form.service_type} onChange={(e) => setForm((f) => ({ ...f, service_type: e.target.value }))} required>
                 <option value="">Select service</option>
-                <option value="Plumbing Solutions">Plumbing Solutions</option>
-                <option value="Water System Solutions">Water System Solutions</option>
-                <option value="Equipment Support">Equipment Support</option>
+                <option value="Plumbing Solutions">Plumbing </option>
+                <option value="Water System Solutions">Water Supply Solutions</option>
+                <option value="Equipment Support">Equipment Rentals</option>
                 <option value="Material Supply">Material Supply</option>
                 <option value="Maintenance">Maintenance</option>
                 <option value="Other">Other</option>

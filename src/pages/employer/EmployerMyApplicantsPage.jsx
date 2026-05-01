@@ -35,15 +35,14 @@ function stop(e) {
   e.stopPropagation()
 }
 
-function locationNameById(countryRows, idValue) {
+function locationNameById(countryMap, idValue) {
   const id = Number(idValue)
   if (!Number.isFinite(id) || id <= 0) return ''
-  const row = countryRows.find((r) => Number(r.countryHierachyId) === id)
-  return row ? String(row.hierachyName || '').trim() : ''
+  return countryMap.get(id) || ''
 }
 
-function locationValue(countryRows, idValue) {
-  const name = locationNameById(countryRows, idValue)
+function locationValue(countryMap, idValue) {
+  const name = locationNameById(countryMap, idValue)
   return name || '—'
 }
 
@@ -77,19 +76,19 @@ const GUARANTOR_PROFILE_LABELS = {
   user_id: 'User id',
 }
 
-function fieldRowsFromProfiles(applicantProfile, guarantorProfile, countryRows) {
+function fieldRowsFromProfiles(applicantProfile, guarantorProfile, countryMap) {
   const applicantRows = applicantProfile
     ? [
-        { key: 'birth_province_id', label: 'Birth province', value: locationValue(countryRows, applicantProfile.birth_province_id) },
-        { key: 'birth_district_id', label: 'Birth district', value: locationValue(countryRows, applicantProfile.birth_district_id) },
-        { key: 'birth_sector_id', label: 'Birth sector', value: locationValue(countryRows, applicantProfile.birth_sector_id) },
-        { key: 'birth_cell_id', label: 'Birth cell', value: locationValue(countryRows, applicantProfile.birth_cell_id) },
-        { key: 'birth_village_id', label: 'Birth village', value: locationValue(countryRows, applicantProfile.birth_village_id) },
-        { key: 'residence_province_id', label: 'Residence province', value: locationValue(countryRows, applicantProfile.residence_province_id) },
-        { key: 'residence_district_id', label: 'Residence district', value: locationValue(countryRows, applicantProfile.residence_district_id) },
-        { key: 'residence_sector_id', label: 'Residence sector', value: locationValue(countryRows, applicantProfile.residence_sector_id) },
-        { key: 'residence_cell_id', label: 'Residence cell', value: locationValue(countryRows, applicantProfile.residence_cell_id) },
-        { key: 'residence_village_id', label: 'Residence village', value: locationValue(countryRows, applicantProfile.residence_village_id) },
+        { key: 'birth_province_id', label: 'Birth province', value: locationValue(countryMap, applicantProfile.birth_province_id) },
+        { key: 'birth_district_id', label: 'Birth district', value: locationValue(countryMap, applicantProfile.birth_district_id) },
+        { key: 'birth_sector_id', label: 'Birth sector', value: locationValue(countryMap, applicantProfile.birth_sector_id) },
+        { key: 'birth_cell_id', label: 'Birth cell', value: locationValue(countryMap, applicantProfile.birth_cell_id) },
+        { key: 'birth_village_id', label: 'Birth village', value: locationValue(countryMap, applicantProfile.birth_village_id) },
+        { key: 'residence_province_id', label: 'Residence province', value: locationValue(countryMap, applicantProfile.residence_province_id) },
+        { key: 'residence_district_id', label: 'Residence district', value: locationValue(countryMap, applicantProfile.residence_district_id) },
+        { key: 'residence_sector_id', label: 'Residence sector', value: locationValue(countryMap, applicantProfile.residence_sector_id) },
+        { key: 'residence_cell_id', label: 'Residence cell', value: locationValue(countryMap, applicantProfile.residence_cell_id) },
+        { key: 'residence_village_id', label: 'Residence village', value: locationValue(countryMap, applicantProfile.residence_village_id) },
         { key: 'national_id', label: APPLICANT_PROFILE_LABELS.national_id, value: applicantProfile.national_id || '' },
         { key: 'passport_photo', label: APPLICANT_PROFILE_LABELS.passport_photo, value: applicantProfile.passport_photo || '' },
         { key: 'full_photo', label: APPLICANT_PROFILE_LABELS.full_photo, value: applicantProfile.full_photo || '' },
@@ -102,10 +101,10 @@ function fieldRowsFromProfiles(applicantProfile, guarantorProfile, countryRows) 
     ? [
         { key: 'full_name', label: GUARANTOR_PROFILE_LABELS.full_name, value: guarantorProfile.full_name || '' },
         { key: 'national_id', label: GUARANTOR_PROFILE_LABELS.national_id, value: guarantorProfile.national_id || '' },
-        { key: 'district_id', label: 'Guarantor district', value: locationValue(countryRows, guarantorProfile.district_id) },
-        { key: 'sector_id', label: 'Guarantor sector', value: locationValue(countryRows, guarantorProfile.sector_id) },
-        { key: 'cell_id', label: 'Guarantor cell', value: locationValue(countryRows, guarantorProfile.cell_id) },
-        { key: 'village_id', label: 'Guarantor village', value: locationValue(countryRows, guarantorProfile.village_id) },
+        { key: 'district_id', label: 'Guarantor district', value: locationValue(countryMap, guarantorProfile.district_id) },
+        { key: 'sector_id', label: 'Guarantor sector', value: locationValue(countryMap, guarantorProfile.sector_id) },
+        { key: 'cell_id', label: 'Guarantor cell', value: locationValue(countryMap, guarantorProfile.cell_id) },
+        { key: 'village_id', label: 'Guarantor village', value: locationValue(countryMap, guarantorProfile.village_id) },
         { key: 'relationship', label: GUARANTOR_PROFILE_LABELS.relationship, value: guarantorProfile.relationship || '' },
       ].filter((r) => r.value != null && String(r.value).trim() !== '')
     : []
@@ -113,11 +112,11 @@ function fieldRowsFromProfiles(applicantProfile, guarantorProfile, countryRows) 
   return { applicantRows, guarantorRows }
 }
 
-function EmployerApplicantDetailsModal({ open, app, countryRows, onClose }) {
+function EmployerApplicantDetailsModal({ open, app, countryMap, onClose }) {
   if (!open || !app) return null
   const applicantProfile = parseMaybeJsonRecord(app.applicant_profile)
   const guarantorProfile = parseMaybeJsonRecord(app.guarantor_profile)
-  const { applicantRows, guarantorRows } = fieldRowsFromProfiles(applicantProfile, guarantorProfile, countryRows)
+  const { applicantRows, guarantorRows } = fieldRowsFromProfiles(applicantProfile, guarantorProfile, countryMap)
 
   return (
     <div className="adminModalOverlay" role="dialog" aria-modal="true" aria-labelledby="employerApplicantProfileTitle" onClick={onClose}>
@@ -185,27 +184,20 @@ export default function EmployerMyApplicantsPage() {
   const { success: toastSuccess, error: toastError } = useToast()
   const [busy, setBusy] = useState(false)
   const [apps, setApps] = useState([])
-  const [countryRows, setCountryRows] = useState([])
+  const [countryMap, setCountryMap] = useState(new Map())
   const [selectedAppForDetails, setSelectedAppForDetails] = useState(null)
   const [selectedJobId, setSelectedJobId] = useState('')
   const [experienceYearsQuery, setExperienceYearsQuery] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
 
   const canAccess = role === 'employer'
-  const itemsPerPage = 2
+  const itemsPerPage = 4
 
-  async function refresh() {
+  async function loadApps() {
     setBusy(true)
-    setCurrentPage(1)
-    setSelectedJobId('')
-    setExperienceYearsQuery('')
     try {
-      const [appsRes, countriesRes] = await Promise.all([
-        apiFetch('/job-applications', { token }),
-        apiFetch('/countrydata').catch(() => []),
-      ])
+      const appsRes = await apiFetch('/job-applications', { token })
       setApps(Array.isArray(appsRes) ? appsRes : [])
-      setCountryRows(Array.isArray(countriesRes) ? countriesRes : [])
     } finally {
       setBusy(false)
     }
@@ -213,14 +205,43 @@ export default function EmployerMyApplicantsPage() {
 
   useEffect(() => {
     if (!token || !canAccess) return
-    void refresh()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    void loadApps()
+  }, [token, canAccess])
+
+  useEffect(() => {
+    if (!token || !canAccess) return
+    let cancelled = false
+    async function loadCountries() {
+      try {
+        const data = await apiFetch('/countrydata')
+        if (cancelled) return
+        const list = Array.isArray(data) ? data : data?.rows || []
+        const m = new Map()
+        list.forEach((r) => {
+          if (r.countryHierachyId) m.set(Number(r.countryHierachyId), String(r.hierachyName || '').trim())
+        })
+        setCountryMap(m)
+      } catch (e) {
+        console.error('Failed to load country data', e)
+      }
+    }
+    void loadCountries()
+    return () => {
+      cancelled = true
+    }
   }, [token, canAccess])
 
   async function setEmployerStatus(appId, next) {
-    await apiFetch(`/job-applications/${appId}`, { method: 'PATCH', token, jsonBody: { employer_status: next } })
-    await refresh()
-    toastSuccess(next === 'approved' ? 'Application approved.' : 'Application rejected.')
+    try {
+      await apiFetch(`/job-applications/${appId}`, { method: 'PATCH', token, jsonBody: { employer_status: next } })
+      // Update local state instead of full refresh
+      setApps((prev) =>
+        prev.map((a) => (String(a.application_id) === String(appId) ? { ...a, employer_status: next } : a))
+      )
+      toastSuccess(next === 'approved' ? 'Application approved.' : 'Application rejected.')
+    } catch (e) {
+      toastError(e?.message || 'Failed to update status')
+    }
   }
 
   async function openSignedApplicationFile(appId, field) {
@@ -298,9 +319,9 @@ export default function EmployerMyApplicantsPage() {
   return (
     <div className="container" style={{ paddingTop: 28, paddingBottom: 60 }}>
       <EmployerApplicantDetailsModal
-        open={Boolean(selectedAppForDetails)}
+        open={!!selectedAppForDetails}
         app={selectedAppForDetails}
-        countryRows={countryRows}
+        countryMap={countryMap}
         onClose={() => setSelectedAppForDetails(null)}
       />
       <div className="sectionHead" style={{ textAlign: 'left' }}>

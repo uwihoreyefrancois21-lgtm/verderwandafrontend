@@ -87,6 +87,10 @@ function getChildrenByLevel(rows, parentId, levelId) {
 
 const JOB_SEEKER_REGISTER_STEPS = 5
 
+function isOfflineNow() {
+  return typeof navigator !== 'undefined' && navigator.onLine === false
+}
+
 export default function AuthPage() {
   const { login, register, loading, token, role: userRole } = useAuth()
   const navigate = useNavigate()
@@ -100,6 +104,7 @@ export default function AuthPage() {
   const [phone, setPhone] = useState('')
   const [role, setRole] = useState('Job Seeker')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [paymentProofFile, setPaymentProofFile] = useState(null)
   const [showPassword, setShowPassword] = useState(false)
   const [busy, setBusy] = useState(false)
@@ -114,6 +119,7 @@ export default function AuthPage() {
   const [countryRows, setCountryRows] = useState([])
   const [countryLoading, setCountryLoading] = useState(false)
   const [countryError, setCountryError] = useState('')
+  const [networkMessage, setNetworkMessage] = useState(() => (isOfflineNow() ? 'Check your internet connection and try again.' : ''))
 
   const [userDetails, setUserDetails] = useState({
     birth_province_id: '',
@@ -144,6 +150,7 @@ export default function AuthPage() {
   useEffect(() => {
     if (!token || loading) return
     const rNorm = normalizeRoleForRedirect(userRole)
+    if (!rNorm) return
     const next = safeNextPath(nextPath)
     if (canUseNextForRole(next, rNorm)) {
       navigate(next, { replace: true })
@@ -163,6 +170,23 @@ export default function AuthPage() {
     }
     navigate('/dashboard', { replace: true })
   }, [token, userRole, loading, navigate, nextPath])
+
+  useEffect(() => {
+    function handleOffline() {
+      setNetworkMessage('Check your internet connection and try again.')
+    }
+
+    function handleOnline() {
+      setNetworkMessage('')
+    }
+
+    window.addEventListener('offline', handleOffline)
+    window.addEventListener('online', handleOnline)
+    return () => {
+      window.removeEventListener('offline', handleOffline)
+      window.removeEventListener('online', handleOnline)
+    }
+  }, [])
 
   useEffect(() => {
     if (mode !== 'register' || role !== 'Job Seeker') return
@@ -230,6 +254,11 @@ export default function AuthPage() {
     e.preventDefault()
     setForgotError('')
     setForgotMessage('')
+    if (isOfflineNow()) {
+      setForgotError('Check your internet connection and try again.')
+      setNetworkMessage('Check your internet connection and try again.')
+      return
+    }
     setForgotBusy(true)
     try {
       const data = await apiFetch('/auth/forgot-password', {
@@ -240,6 +269,7 @@ export default function AuthPage() {
       setForgotMessage(msg)
       setForgotEmail('')
     } catch (err) {
+      if (err?.isNetworkError) setNetworkMessage('Check your internet connection and try again.')
       setForgotError(err.message || 'Could not send email. Try again later.')
     } finally {
       setForgotBusy(false)
@@ -249,6 +279,11 @@ export default function AuthPage() {
   async function onSubmit(e) {
     e.preventDefault()
     setError('')
+    if (isOfflineNow()) {
+      setError('Check your internet connection and try again.')
+      setNetworkMessage('Check your internet connection and try again.')
+      return
+    }
     setBusy(true)
     try {
       let result = null
@@ -259,13 +294,18 @@ export default function AuthPage() {
           return
         }
         if (!isValidRwLeaderPhone07(phone)) {
-          setError(`Phone number must be ${RW_PHONE_10_LEN} digits and start with 07 (e.g. 0788123456).`)
+          setError(`Phone number must be ${RW_PHONE_10_LEN} digits and start with 07 (e.g. 0700000000).`)
           setBusy(false)
           return
         }
         if (role === 'Job Seeker' && registerStep === 1) {
           if (!isStrongPassword(password)) {
             setError(STRONG_PASSWORD_HINT)
+            setBusy(false)
+            return
+          }
+          if (password !== confirmPassword) {
+            setError('Passwords do not match.')
             setBusy(false)
             return
           }
@@ -343,6 +383,11 @@ export default function AuthPage() {
         }
         if (!isStrongPassword(password)) {
           setError(STRONG_PASSWORD_HINT)
+          setBusy(false)
+          return
+        }
+        if (password !== confirmPassword) {
+          setError('Passwords do not match.')
           setBusy(false)
           return
         }
@@ -441,13 +486,14 @@ export default function AuthPage() {
                 }
               : null,
         })
-        setRegisterSuccess(result?.message || 'Registration submitted. Please wait for admin approval before login.')
+        setRegisterSuccess(result?.message || 'Registration submitted. Please wait for admin approval before login or call Admin to:0 788 599 614.')
         setMode('login')
         setName('')
         setEmail('')
         setPhone('')
         setRole('Job Seeker')
         setPassword('')
+        setConfirmPassword('')
         setPaymentProofFile(null)
         setUserDetails({
           birth_province_id: '',
@@ -477,7 +523,8 @@ export default function AuthPage() {
         setBusy(false)
         return
       } else {
-        result = await login({ email, password })
+        await login({ email, password })
+        return
       }
 
       const rawRole = result?.user?.role || ''
@@ -494,6 +541,7 @@ export default function AuthPage() {
       if (rNorm === 'job_seeker') return navigate('/dashboard/jobseeker', { replace: true })
       return navigate('/dashboard', { replace: true })
     } catch (err) {
+      if (err?.isNetworkError) setNetworkMessage('Check your internet connection and try again.')
       setError(err.message || 'Auth failed')
     } finally {
       setBusy(false)
@@ -513,7 +561,7 @@ export default function AuthPage() {
 
   const jobSeekerStepCopy = {
   /*   1: {
-      title: 'Create account',
+     
       lead: 'Account details and payment proof. The next four screens collect birth, residence, photos and village leader, then guarantor.',
     }, */
     2: {
@@ -552,6 +600,13 @@ export default function AuthPage() {
         <div className="authCardHead">
           <h1 className="authHeading">{mode === 'register' ? registerHeading : 'Sign in'}</h1>
           <p className="authLead">{mode === 'register' ? registerLead : hint}</p>
+          <p style={{ fontSize: "14px", color: "#333" }}>
+  <strong style={{ color: "#0d6efd" }}>Momo Pay Code:</strong> 059914 | 
+  <strong style={{ color: "#0d6efd" }}> Name:</strong> Verde Rwanda Ltd | 
+  <strong style={{ color: "#0d6efd" }}> Bank:</strong> Equity Bank | 
+  <strong style={{ color: "#0d6efd" }}> Account:</strong> 
+</p>
+          {networkMessage ? <div className="toast error authToastInline authNetworkBanner">{networkMessage}</div> : null}
           {mode === 'register' && role === 'Job Seeker' ? (
             <>
               <div className="authStepper authStepper--five" role="navigation" aria-label={`Registration, step ${registerStep} of ${JOB_SEEKER_REGISTER_STEPS}`}>
@@ -595,6 +650,7 @@ export default function AuthPage() {
               setForgotMessage('')
               setForgotError('')
               setRegisterSuccess('')
+              setConfirmPassword('')
               setShowPassword(false)
             }}
           >
@@ -608,6 +664,7 @@ export default function AuthPage() {
               setRegisterStep(1)
               setShowForgot(false)
               setRegisterSuccess('')
+              setConfirmPassword('')
               setShowPassword(false)
             }}
           >
@@ -1091,6 +1148,31 @@ export default function AuthPage() {
                     </button>
                   </div>
                 </label>
+                {mode === 'register' ? (
+                  <label className="field fieldCompact">
+                    <span className="fieldLabel">Confirm password</span>
+                    <div className="passwordInputWrap">
+                      <input
+                        className="fieldInput passwordFieldInput"
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Confirm your password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
+                        autoComplete="new-password"
+                      />
+                      <button
+                        type="button"
+                        className="passwordIconBtn"
+                        aria-label={showPassword ? 'Hide password' : 'Show password'}
+                        title={showPassword ? 'Hide password' : 'Show password'}
+                        onClick={() => setShowPassword((v) => !v)}
+                      >
+                        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                      </button>
+                    </div>
+                  </label>
+                ) : null}
                 {mode === 'register' ? <div className="dashSubtle">{STRONG_PASSWORD_HINT}</div> : null}
               </>
             )}

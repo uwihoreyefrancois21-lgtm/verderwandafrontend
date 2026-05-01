@@ -425,7 +425,7 @@ export default function ApplyJobPage() {
     <div className="container jobApplyPage">
       <div className="jobApplyLayout">
         <div className="sectionHead jobApplyHead">
-          <h2 className="sectionTitle">Apply for job</h2>
+         
           <p className="sectionSubtitle">
             {selectedJob ? (
               <>
@@ -472,7 +472,6 @@ export default function ApplyJobPage() {
             <div className="dashItem applyJobSection" style={{ marginBottom: 0 }}>
               <div className="dashItemTitle">Your details</div>
               <div className="dashSubtle" style={{ marginBottom: 10 }}>
-                Phone and email are shown to employers only after admin approval.
               </div>
               <div className="jobApplyFieldStack">
                 <label className="field">

@@ -1,9 +1,9 @@
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import heroImg from '../assets/hero.png'
 import { SERVICE_IMAGE } from '../constants/serviceImages'
 import { apiFetch } from '../services/api'
 import { resolveMediaUrl } from '../utils/mediaUrl'
-import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 
 function truncateText(text, max = 140) {
   if (!text) return ''
@@ -292,12 +292,21 @@ export default function HomePage() {
           <div className="heroCardWrap">
             <div className="heroGrid">
               <div className="heroCopy">
-                <div className="pill">Reliable. Sustainable. Built to last.</div>
-                <h1 className="heroTitle">Professional Plumbing &amp; Water System Solutions in Rwanda</h1>
-                <p className="heroLead">
-                  We design, install and maintain reliable plumbing and water infrastructure systems. We also provide equipment rentals,
-                  material supply and employment placement opportunities.
-                </p>
+              {/* <div className="pill">Reliable. Sustainable. Built to last.</div>  */}
+                <h1 className="heroTitle">Professional Plumbing, Sustainable water infrastructures, Equipment rentals, Material supply and Job opportunities.</h1>
+                <div className="heroLead">
+               
+                  <p>
+                    We specialize in the design, installation, and maintenance of high-quality plumbing and water infrastructure systems
+                    tailored to meet residential, commercial, and industrial needs. Our expertise ensures long-lasting performance,
+                    water efficiency, and system reliability.
+                  </p>
+                  <p>
+                    Beyond installation, we support your projects end-to-end with equipment rental services, quality material supply,
+                    and skilled workforce placement, connecting the right people with the right opportunities.
+                  </p>
+                  <p style={{ fontWeight: "bold" }}>Your trusted partner</p>
+                </div>
 
                 <div className="ctaRow">
                   <Link className="btn btnBlue" to="/request-quotes">
@@ -317,6 +326,7 @@ export default function HomePage() {
 
               <div className="heroMedia">
                 <div className="heroImageCard">
+                  <p className="pill"> Reliable. Sustainable. Built to last.</p>
                   <img className="heroImage" src={heroImg} alt="Plumbing and water infrastructure" />
                   <div className="heroGlow" aria-hidden="true" />
                 </div>

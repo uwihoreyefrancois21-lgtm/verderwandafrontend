@@ -3,10 +3,9 @@ import { apiFetch } from '../../services/api'
 import { useToast } from '../../context/ToastContext.jsx'
 
 const METHODS = [
-  { id: 'momo', label: 'Mobile Money (MoMo)' },
-  { id: 'bank', label: 'Bank transfer' },
-  { id: 'cash', label: 'Cash' },
-  { id: 'card', label: 'Card' },
+  { id: 'momo', label: 'Mobile Money (MoMo pay code:059914 Name: Verde Rwanda Ltd)' },
+  { id: 'bank', label: 'Bank transfer( Equity Bank:)' },
+ 
 ]
 
 export default function SubmitJobPaymentModal({ open, token, jobId, jobTitle, onClose, onSubmitted }) {

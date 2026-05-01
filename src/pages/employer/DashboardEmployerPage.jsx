@@ -77,9 +77,21 @@ export default function DashboardEmployerPage() {
   return (
     <div className="container" style={{ paddingTop: 28, paddingBottom: 60 }}>
       <div className="sectionHead" style={{ textAlign: 'left' }}>
-        <h2 className="sectionTitle">Employer Dashboard</h2>
-        <p className="sectionSubtitle">Overview — open My applicants or My job posts for full lists.</p>
+        <h2 className="sectionTitle">Employer Dashboard</h2> 
+       {/*  <p className="sectionSubtitle">Overview — open My applicants or My job posts for full lists.</p> */}
+{/* <p style={{ fontSize: "14px", color: "#333" }}>
+  <span style={{
+    fontWeight: "bold",
+    background: "linear-gradient(90deg, #0d6efd, #20c997)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent"
+  }}>
+    Payment:
+  </span>{" "}
+  Momo Pay Code: 059914 | Name: Verde Rwanda Ltd | Bank: Equity Bank | Account: 
+</p> */}
       </div>
+      
 
       <div className="dashGrid2" style={{ marginTop: 12 }}>
         <div className="dashCard">

@@ -2,7 +2,7 @@ export default function WhatsAppFloatingButton() {
   return (
     <a
       className="whatsappFloating"
-      href="https://wa.me/250788599614"
+      href="https://wa.me/250799512923"
       target="_blank"
       rel="noreferrer"
       aria-label="Chat with WhatsApp"

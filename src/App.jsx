@@ -746,11 +746,20 @@ export default function App() {
           <div className="container heroGrid">
             <div className="heroCopy">
               <div className="pill">Reliable. Sustainable. Built to last.</div>
-              <h1 className="heroTitle">Professional Plumbing &amp; Water System Solutions in Rwanda</h1>
-              <p className="heroLead">
-                We design, install and maintain reliable plumbing and water infrastructure systems. We also
-                provide equipment rentals, material supply and employment placement opportunities.
-              </p>
+              <h1 className="heroTitle"> Professional Plumbing, Sustainable water infrastructures, Equipment rentals, Material supply and Job opportunities.</h1>
+              <div className="heroLead">
+              
+                <p>
+                  We specialize in the design, installation, and maintenance of high-quality plumbing and water infrastructure
+                  systems tailored to meet residential, commercial, and industrial needs. Our expertise ensures long-lasting
+                  performance, water efficiency, and system reliability.
+                </p>
+                <p>
+                  Beyond installation, we support your projects end-to-end with equipment rental services, quality material supply,
+                  and skilled workforce placement, connecting the right people with the right opportunities.
+                </p>
+                  <p style={{ fontWeight: "bold" }}>Your trusted partner</p>
+              </div>
 
               <div className="ctaRow">
                 <a className="btn btnBlue" href="#request-quote">

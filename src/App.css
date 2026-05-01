@@ -146,10 +146,17 @@
 }
 
 .heroTitle {
-  font-size: 38px;
+  font-size: 23px;
   margin: 10px 0 8px;
   letter-spacing: -0.02em;
-  color: var(--text);
+  font-weight: bold;
+
+  background: linear-gradient(90deg, #0d6efd, #20c997); /* nicer blue → green */
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 
 .heroLead {
@@ -269,6 +276,7 @@
   font-size: 28px;
   font-weight: 950;
   color: var(--text);
+  padding-left: 8px;
 }
 
 .sectionSubtitle {
@@ -512,10 +520,12 @@
   flex-direction: column;
   gap: 0;
   min-width: 0;
+ 
 }
 
 .whyIntroCol .sectionSubtitle {
   margin-bottom: 0;
+  padding-left: 15px;
 }
 
 .whyIntroImageWrap {
@@ -5354,6 +5364,11 @@ a.adminTopIconBtn {
   margin: 0;
 }
 
+.authNetworkBanner {
+  margin-top: 10px;
+  text-align: left;
+}
+
 .authLinkButton {
   background: none;
   border: none;
@@ -5381,6 +5396,58 @@ a.adminTopIconBtn {
 
 .forgotPasswordPanel {
   padding-top: 4px;
+}
+
+@media (max-width: 640px) {
+  .authPageShell {
+    align-items: flex-start;
+    padding: 14px 12px 28px;
+  }
+
+  .authCardCompact {
+    padding: 18px 14px 20px;
+    border-radius: 16px;
+  }
+
+  .authPageShell .authCardCompact--registerWide {
+    max-width: 100%;
+  }
+
+  .authStepper {
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .authRegisterFooter {
+    flex-direction: column;
+  }
+
+  .authRegisterFooterBack,
+  .authRegisterFooterSubmit {
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .authHeading {
+    font-size: 20px;
+  }
+
+  .authLead,
+  .authStepperCaption,
+  .authSectionLead,
+  .authForgotIntro {
+    font-size: 12px;
+  }
+
+  .authTabsCompact .authTab {
+    flex: 1 1 0;
+  }
+
+  .authStepper--five .authStepperLabel {
+    font-size: 8px;
+    max-width: 44px;
+  }
 }
 
 .authForgotIntro {

@@ -7,9 +7,9 @@ import { useToast } from '../../context/ToastContext.jsx'
 const MAP_EMBED_SRC =
   'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3987.366554272768!2d30.096379874487624!3d-2.0087358368414603!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dca6262f5e285b%3A0x29563196d611ebf4!2sKK%2015%20Rd%2C%20Kigali!5e0!3m2!1sen!2srw!4v1773989385653!5m2!1sen!2srw'
 
-const PHONE = '+250788599614'
+const PHONE = '+250788599614/0799512923'
 const EMAIL = 'verderwanda@gmail.com'
-const ADDRESS = 'Kicukiro, Kicukiro, Umujyi wa Kigali, RWANDA'
+const ADDRESS = 'Kicukiro, Kicukiro, Kigali City, RWANDA'
 const WA_URL = 'https://wa.me/250788599614'
 
 /** Optional in `.env`: `VITE_SOCIAL_FACEBOOK_URL`, `VITE_SOCIAL_INSTAGRAM_URL`, … */
@@ -87,10 +87,10 @@ function SocialIcon({ name }) {
 }
 
 const SOCIAL_ITEMS = [
-  { id: 'facebook', label: 'Facebook', icon: 'facebook', href: () => socialUrl('FACEBOOK', 'https://www.facebook.com/') },
-  { id: 'instagram', label: 'Instagram', icon: 'instagram', href: () => socialUrl('INSTAGRAM', 'https://www.instagram.com/') },
+  { id: 'facebook', label: 'Facebook', icon: 'facebook', href: () => socialUrl('FACEBOOK', 'https://www.facebook.com/share/1AdU4kGX4Y/') },
+  { id: 'instagram', label: 'Instagram', icon: 'instagram', href: () => socialUrl('INSTAGRAM', 'https://www.instagram.com/verderwanda/') },
   { id: 'linkedin', label: 'LinkedIn', icon: 'linkedin', href: () => socialUrl('LINKEDIN', 'https://www.linkedin.com/company/verde-rwanda-ltd/?viewAsMember=true') },
-  { id: 'twitter', label: 'X (Twitter)', icon: 'twitter', href: () => socialUrl('TWITTER', 'https://twitter.com/') },
+  { id: 'twitter', label: 'X (Twitter)', icon: 'twitter', href: () => socialUrl('TWITTER', 'https://x.com/Verderwanda') },
   { id: 'youtube', label: 'YouTube', icon: 'youtube', href: () => socialUrl('YOUTUBE', 'https://www.youtube.com/') },
   { id: 'whatsapp', label: 'WhatsApp', icon: 'whatsapp', href: () => socialUrl('WHATSAPP', WA_URL) },
 ]

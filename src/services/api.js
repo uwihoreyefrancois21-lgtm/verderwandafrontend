@@ -1,5 +1,16 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api/v1';
 
+function toNetworkError(error) {
+  const offline = typeof navigator !== 'undefined' && navigator.onLine === false;
+  const message = offline
+    ? 'Check your internet connection and try again.'
+    : 'Network error. Check your internet connection and try again.';
+  const err = new Error(message);
+  err.cause = error;
+  err.isNetworkError = true;
+  return err;
+}
+
 function getAuthHeaders(token) {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
@@ -21,11 +32,16 @@ export async function apiFetch(path, { method = 'GET', token, jsonBody, formData
 
   if (!formData && jsonBody) headers['Content-Type'] = 'application/json';
 
-  const res = await fetch(`${API_BASE_URL}${path}`, {
-    method,
-    headers,
-    body: formData ? formData : jsonBody ? JSON.stringify(jsonBody) : undefined,
-  });
+  let res;
+  try {
+    res = await fetch(`${API_BASE_URL}${path}`, {
+      method,
+      headers,
+      body: formData ? formData : jsonBody ? JSON.stringify(jsonBody) : undefined,
+    });
+  } catch (error) {
+    throw toNetworkError(error);
+  }
 
   const payload = await parseJsonSafe(res);
   if (!res.ok) {
